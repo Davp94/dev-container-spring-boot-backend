@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class UsuarioService {
+public class UsuarioService implements IUsuarioService{
     private final UsuarioRepository usuarioRepository;
     // private final RolRepository rolRepository;
     private final EntityManager entityManager;
@@ -22,10 +22,14 @@ public class UsuarioService {
         this.entityManager = entityManager;
     }
 
+
+    @Override
     public Optional<Usuario> findById(Long id) {
         return usuarioRepository.findById(id);
     }
 
+
+    @Override
     public List<Usuario> findAll() {
         try {
             return usuarioRepository.findAll();
@@ -35,6 +39,8 @@ public class UsuarioService {
         }    
     }
 
+
+    @Override
     public Usuario save(Usuario usuario) {
         // for() (Rol r : usuario.getRoles()) {
         //     if (r.getId() == null) {
@@ -45,6 +51,8 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+
+    @Override
     public void deleteById(Long id) {
         usuarioRepository.deleteById(id);
     }
