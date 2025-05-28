@@ -1,18 +1,21 @@
-package main.java.com.blumbit.supermercado.entity;
+package com.blumbit.supermercado.entity;
 import java.security.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.*;
 
-@Entity
 @Getter
 @Setter
 @Builder
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class Usuario {
 
     @Id
