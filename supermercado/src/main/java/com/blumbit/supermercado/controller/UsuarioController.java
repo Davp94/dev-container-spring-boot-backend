@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blumbit.supermercado.entity.Usuario;
+import com.blumbit.supermercado.dto.request.UsuarioRequest;
+import com.blumbit.supermercado.dto.response.UsuarioResponse;
 import com.blumbit.supermercado.service.IUsuarioService;
 
 
@@ -27,20 +29,24 @@ public class UsuarioController {
     }
 
     @GetMapping("/usuarios/{id}")
-    public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long id) {
-        Optional<Usuario> usuario = usuarioService.findById(id);
-        return usuario.map(ResponseEntity::ok)
-                      .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<UsuarioResponse> getUsuarioById(@PathVariable Long id) {   
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(usuarioService.findById(id));
     }
 
     @GetMapping("/usuarios")
-    public List<Usuario> getAllUsuarios() {
+    public List<UsuarioResponse> getAllUsuarios() {
         return usuarioService.findAll();
     }
 
     @PostMapping("/usuarios")
-    public ResponseEntity<Usuario> createUsuario(@RequestBody Usuario usuario) {
-        Usuario savedUsuario = usuarioService.save(usuario); // Assuming Rol is handled elsewhere
+    public ResponseEntity<UsuarioResponse> createUsuario(@RequestBody UsuarioRequest usuarioRequest) {
+        UsuarioResponse savedUsuario = usuarioService.save(usuarioRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUsuario);
+    }
+
+    @PutMapping("/usuarios/{id}")
+    public ResponseEntity<UsuarioResponse> updateUsuario(@PathVariable Long id, @RequestBody UsuarioRequest usuarioRequest) {
+        UsuarioResponse savedUsuario = usuarioService.update(id, usuarioRequest); 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUsuario);
     }
 
