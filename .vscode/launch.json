@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SupermercadoApplication<supermercado>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.blumbit.supermercado.SupermercadoApplication",
+            "projectName": "supermercado",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

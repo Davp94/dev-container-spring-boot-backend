@@ -15,7 +15,7 @@ import lombok.Setter;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UsuarioResponse {
-    private Long id;
+    private Integer id;
     private String email;
     private String fechaNacimiento;
     private String nombreCompleto;
@@ -30,7 +30,7 @@ public class UsuarioResponse {
         return UsuarioResponse.builder()
                     .id(usuario.getId())
                     .email(usuario.getEmail())
-                    .fechaNacimiento(usuario.getFechaNacimiento().toString())
+                    .fechaNacimiento(usuario.getFechaNacimiento() != null ? usuario.getFechaNacimiento().toString() : null)
                     .nombreCompleto(usuario.getNombres()+" "+usuario.getApellidos())
                     .genero(usuario.getGenero())
                     .telefono(usuario.getTelefono())

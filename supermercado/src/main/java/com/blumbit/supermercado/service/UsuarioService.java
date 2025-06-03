@@ -3,10 +3,12 @@ package com.blumbit.supermercado.service;
 import com.blumbit.supermercado.dto.request.UsuarioRequest;
 import com.blumbit.supermercado.dto.response.UsuarioResponse;
 import com.blumbit.supermercado.entity.Usuario;
+import com.blumbit.supermercado.exception.NotFoundByIdException;
 import com.blumbit.supermercado.repository.UsuarioRepository;
 
 import jakarta.persistence.EntityManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +33,7 @@ public class UsuarioService implements IUsuarioService{
         try {
             Usuario usuario = usuarioRepository.findById(id).orElse(null);
             if (usuario == null) {
-                throw new RuntimeException("No se encontro un usuario con el id ingresado");
+                throw new NotFoundByIdException("No se encontro un usuario con el id ingresado");
             }
             return UsuarioResponse.fromEntity(usuario);
         } catch (Exception e) {
@@ -52,11 +54,14 @@ public class UsuarioService implements IUsuarioService{
             //  }
             //  return usuariosResponse;
             //CON LAMBDAS Y STREAMS
-            return usuarioRepository.findAll().stream()
-                    .filter(usuario-> usuario.getNacionalidad().equals("Boliviano"))
+            List<UsuarioResponse> response = usuarioRepository.findAll().stream()
                     .map(UsuarioResponse::fromEntity).collect(Collectors.toList());
+            if(response.size() == 0){
+                throw new RuntimeException("No existen registros de usuarios");
+            }
+            return response;
         } catch (Exception e) {
-             throw new RuntimeException("No se pudo recuperar los usuarios");
+             throw e;
         }  
     }
 
@@ -64,12 +69,10 @@ public class UsuarioService implements IUsuarioService{
     public UsuarioResponse save(UsuarioRequest usuario) {
         try {
             Usuario usuarioToSave = UsuarioRequest.toEntity(usuario);
-
-            //TODO add id to usuario;
-            //TODO add password;
+            usuarioToSave.setPassword("123456");
             return UsuarioResponse.fromEntity(usuarioRepository.save(usuarioToSave));
         } catch (Exception e) {
-           throw new RuntimeException("Error al guardar el usuario");
+           throw new RuntimeException("error creando");
         }
     }
 

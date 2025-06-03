@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blumbit.supermercado.common.dto.CustomResponse;
 import com.blumbit.supermercado.dto.request.UsuarioRequest;
 import com.blumbit.supermercado.dto.response.UsuarioResponse;
 import com.blumbit.supermercado.service.IUsuarioService;
+
+import jakarta.validation.Valid;
 
 
 @RestController
@@ -29,8 +32,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/usuarios/{id}")
-    public ResponseEntity<UsuarioResponse> getUsuarioById(@PathVariable Long id) {   
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(usuarioService.findById(id));
+    public CustomResponse<UsuarioResponse> getUsuarioById(@PathVariable Long id) {   
+        return CustomResponse.<UsuarioResponse>success(usuarioService.findById(id));
     }
 
     @GetMapping("/usuarios")
@@ -39,7 +42,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/usuarios")
-    public ResponseEntity<UsuarioResponse> createUsuario(@RequestBody UsuarioRequest usuarioRequest) {
+    public ResponseEntity<UsuarioResponse> createUsuario(@RequestBody @Valid UsuarioRequest usuarioRequest) {
         UsuarioResponse savedUsuario = usuarioService.save(usuarioRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUsuario);
     }
