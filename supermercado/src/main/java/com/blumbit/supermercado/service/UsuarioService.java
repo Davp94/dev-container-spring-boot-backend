@@ -14,18 +14,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class UsuarioService implements IUsuarioService{
     private final UsuarioRepository usuarioRepository;
-    // private final RolRepository rolRepository;
-    private final EntityManager entityManager;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, EntityManager entityManager) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
-        this.entityManager = entityManager;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class UsuarioService implements IUsuarioService{
     public UsuarioResponse save(UsuarioRequest usuario) {
         try {
             Usuario usuarioToSave = UsuarioRequest.toEntity(usuario);
-            usuarioToSave.setPassword("123456");
+            usuarioToSave.setPassword(passwordEncoder.encode("123456"));
             return UsuarioResponse.fromEntity(usuarioRepository.save(usuarioToSave));
         } catch (Exception e) {
            throw new RuntimeException("error creando");
