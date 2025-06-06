@@ -3,6 +3,7 @@ import java.security.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -10,6 +11,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import lombok.*;
 
 @Getter
@@ -46,5 +50,13 @@ public class Usuario {
     private String tipoDocumento;
 
     private String nacionalidad;
+
+    @ManyToMany
+    @JoinTable(
+        name = "usuario_rol",
+        joinColumns = @JoinColumn(name = "usuario_id"),
+        inverseJoinColumns = @JoinColumn(name = "rol_id")
+    )
+    private List<Rol> roles;
 
 }

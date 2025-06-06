@@ -1,9 +1,8 @@
 package com.blumbit.supermercado.entity;
 
-import java.util.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import lombok.*;
@@ -15,17 +14,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Rol {
-
+public class Permiso {
     @Id
-    @GeneratedValue
-    private Short id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Integer id;
 
     private String nombre;
 
     private String descripcion;
 
-    @ManyToMany(mappedBy = "roles")
-    private List<Usuario> usuarios;
-
+    private String action;
 }
