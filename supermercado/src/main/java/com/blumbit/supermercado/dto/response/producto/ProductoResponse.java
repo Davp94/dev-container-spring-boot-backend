@@ -24,6 +24,7 @@ public class ProductoResponse {
     private String descripcion;
     private String codigoBarra;
     private String marca;
+    private String nombreCategoria;
     private BigDecimal precioVentaActual;
 
 
@@ -33,6 +34,7 @@ public class ProductoResponse {
                 .descripcion(producto.getDescripcion())
                 .codigoBarra(producto.getCodigoBarra())
                 .marca(producto.getMarca())
+                .nombreCategoria(producto.getCategoria().getNombre())
                 .precioVentaActual(producto.getPrecioVentaActual())
                 .build();
     }

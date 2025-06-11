@@ -14,6 +14,7 @@ import com.blumbit.supermercado.entity.Rol;
 import com.blumbit.supermercado.entity.Usuario;
 import com.blumbit.supermercado.repository.PermisoRepository;
 import com.blumbit.supermercado.repository.PermisoRolRepository;
+import com.blumbit.supermercado.repository.ProductoRepository;
 import com.blumbit.supermercado.repository.RolRepository;
 import com.blumbit.supermercado.repository.UsuarioRepository;
 
@@ -25,13 +26,16 @@ public class DataSeeder implements ApplicationRunner{
     private final PermisoRepository permisoRepository;
     private final PermisoRolRepository permisoRolRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ProductoRepository productoRepository;
+    //TODO add categirias repository
 
-    public DataSeeder(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, PermisoRepository permisoRepository, PermisoRolRepository permisoRolRepository, RolRepository rolRepository) {
+    public DataSeeder(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, PermisoRepository permisoRepository, PermisoRolRepository permisoRolRepository, RolRepository rolRepository, ProductoRepository productoRepository) {
         this.usuarioRepository = usuarioRepository;
         this.rolRepository = rolRepository;
         this.permisoRepository = permisoRepository;
         this.permisoRolRepository = permisoRolRepository;
         this.passwordEncoder = passwordEncoder;
+        this.productoRepository = productoRepository;
     }
 
     @Override
