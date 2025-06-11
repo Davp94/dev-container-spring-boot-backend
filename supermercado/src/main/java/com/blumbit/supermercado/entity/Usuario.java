@@ -23,17 +23,17 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Usuario {
+public class Usuario { //usuario
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
-    private String email;
+    private String email; //email
 
     private String password;
 
-    private LocalDate fechaNacimiento;
+    private LocalDate fechaNacimiento; //fecha_nacimiento
 
     private String nombres;
 
@@ -45,7 +45,7 @@ public class Usuario {
 
     private String direccion;
 
-    private String documentoIdentidad;
+    private String documentoIdentidad; // documento_identidad
 
     private String tipoDocumento;
 

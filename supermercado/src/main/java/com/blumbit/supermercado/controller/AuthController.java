@@ -11,6 +11,7 @@ import com.blumbit.supermercado.util.AuthService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -29,6 +30,8 @@ public class AuthController {
     }
 
     @PostMapping("/refresh-token")
+    //@PreAuthorize("hasAutority('CREATE_PRODUCT', 'READ_PRODUCT')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public CustomResponse<AuthResponse> refreshToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String authentication) {
         return CustomResponse.success(authService.refreshToken(authentication));
     }
