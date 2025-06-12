@@ -8,15 +8,18 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.blumbit.supermercado.entity.Categoria;
 import com.blumbit.supermercado.entity.Permiso;
 import com.blumbit.supermercado.entity.PermisoRol;
 import com.blumbit.supermercado.entity.Rol;
 import com.blumbit.supermercado.entity.Usuario;
+import com.blumbit.supermercado.repository.CategoriaRepository;
 import com.blumbit.supermercado.repository.PermisoRepository;
 import com.blumbit.supermercado.repository.PermisoRolRepository;
 import com.blumbit.supermercado.repository.ProductoRepository;
 import com.blumbit.supermercado.repository.RolRepository;
 import com.blumbit.supermercado.repository.UsuarioRepository;
+import com.github.javafaker.Faker;
 
 @Component
 public class DataSeeder implements ApplicationRunner{
@@ -27,15 +30,17 @@ public class DataSeeder implements ApplicationRunner{
     private final PermisoRolRepository permisoRolRepository;
     private final PasswordEncoder passwordEncoder;
     private final ProductoRepository productoRepository;
+    private final CategoriaRepository categoriaRepository;
     //TODO add categirias repository
 
-    public DataSeeder(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, PermisoRepository permisoRepository, PermisoRolRepository permisoRolRepository, RolRepository rolRepository, ProductoRepository productoRepository) {
+    public DataSeeder(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, PermisoRepository permisoRepository, PermisoRolRepository permisoRolRepository, RolRepository rolRepository, ProductoRepository productoRepository, CategoriaRepository categoriaRepository) {
         this.usuarioRepository = usuarioRepository;
         this.rolRepository = rolRepository;
         this.permisoRepository = permisoRepository;
         this.permisoRolRepository = permisoRolRepository;
         this.passwordEncoder = passwordEncoder;
         this.productoRepository = productoRepository;
+        this.categoriaRepository = categoriaRepository;
     }
 
     @Override
@@ -75,8 +80,17 @@ public class DataSeeder implements ApplicationRunner{
                                 .fechaCreacion(Instant.now())
                                 .build();
             permisoRolRepository.saveAll(List.of(permisoRol1, permisoRol2));
-  
         }
+         //TODO ADD DATA PRODUCTOS & CATEGORIAS
+            if (categoriaRepository.count() == 0) {
+                Faker faker = new Faker();
+                for (int i = 0; i < 10; i++) {
+                    categoriaRepository.save(Categoria.builder()
+                            .descripcion(faker.animal().name())
+                            .nombre(faker.company().name())
+                            .build());
+                }
+            }
     }
 
 }

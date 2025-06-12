@@ -1,0 +1,6 @@
+Todo list
+- Completar filtros en modulo regalias
+- Coordinate agetic workflow
+- Añadir reportes en regalias
+
+
