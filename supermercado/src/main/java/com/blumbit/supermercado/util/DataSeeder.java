@@ -1,7 +1,13 @@
 package com.blumbit.supermercado.util;
 
+import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -11,6 +17,7 @@ import org.springframework.stereotype.Component;
 import com.blumbit.supermercado.entity.Categoria;
 import com.blumbit.supermercado.entity.Permiso;
 import com.blumbit.supermercado.entity.PermisoRol;
+import com.blumbit.supermercado.entity.Producto;
 import com.blumbit.supermercado.entity.Rol;
 import com.blumbit.supermercado.entity.Usuario;
 import com.blumbit.supermercado.repository.CategoriaRepository;
@@ -84,13 +91,38 @@ public class DataSeeder implements ApplicationRunner{
          //TODO ADD DATA PRODUCTOS & CATEGORIAS
             if (categoriaRepository.count() == 0) {
                 Faker faker = new Faker();
+                List<Categoria> categorias = new ArrayList<>();
                 for (int i = 0; i < 10; i++) {
-                    categoriaRepository.save(Categoria.builder()
-                            .descripcion(faker.animal().name())
-                            .nombre(faker.company().name())
+                    Categoria categoriaSaved = categoriaRepository.save(Categoria.builder()
+                            .descripcion(faker.lorem().sentence(10))
+                            .nombre(faker.commerce().department())
                             .build());
+                    categorias.add(categoriaSaved);
                 }
+                Random random = new Random();
+                for (int i = 0; i < 1000; i++) {
+                    Categoria categoria = categorias.get(random.nextInt(categorias.size()));
+                    productoRepository.save(Producto.builder()
+                    .activo(faker.bool().bool())
+                    .codigoBarra(faker.code().ean13())
+                    .descripcion(faker.commerce().productName()+" - " + faker.lorem().sentence(5))
+                    .fechaRegistro(LocalDate.now())
+                    // .fechaRegistro(faker.date().between(
+                    //     Date.from(LocalDate.now().minusYears(2).atStartOfDay(ZoneId.systemDefault()).toInstant()), 
+                    //     Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant())))
+                    .imagenUrl("image-product-example.png")
+                    .marca(faker.company().name())
+                    .nombre(faker.commerce().productName())
+                    .precioVentaActual(BigDecimal.valueOf(faker.number().randomDouble(2, 1, 1000)))
+                    .stockMinimo(faker.number().numberBetween(5, 50))
+                    .categoria(categoria)
+                    .unidadMedida(getRandomUnidadMedida(faker)).build());
+                }   
             }
+    }
+    private String getRandomUnidadMedida(Faker faker){
+        String[] unidades = {"kg", "g", "ml", "l", "pack", "unit"};
+        return unidades[faker.number().numberBetween(0, unidades.length)];
     }
 
 }
