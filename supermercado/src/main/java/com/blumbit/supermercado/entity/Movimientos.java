@@ -34,6 +34,8 @@ public class Movimientos {
 
     private BigDecimal totalLinea;
 
+    private Integer cantidad;
+
     private String observaciones;
 
     @ManyToOne

@@ -1,7 +1,10 @@
 package com.blumbit.supermercado.service;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -10,8 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.blumbit.supermercado.dto.request.MovimientoRequest;
 import com.blumbit.supermercado.dto.request.NotaRequest;
 import com.blumbit.supermercado.dto.response.nota.NotaResponse;
+import com.blumbit.supermercado.entity.Almacen;
+import com.blumbit.supermercado.entity.AlmacenProducto;
 import com.blumbit.supermercado.entity.EntidadComercial;
+import com.blumbit.supermercado.entity.Movimientos;
 import com.blumbit.supermercado.entity.Notas;
+import com.blumbit.supermercado.entity.Producto;
 import com.blumbit.supermercado.entity.Usuario;
 import com.blumbit.supermercado.repository.AlmacenProductoRepository;
 import com.blumbit.supermercado.repository.MovimientoRepository;
@@ -40,7 +47,7 @@ public class NotaService implements INotaService{
             // CREATE NOTA
             Notas notaToCreate = NotaRequest.toEntity(notaRequest);
             notaToCreate.setFechaEmision(LocalDate.now());
-            notaToCreate.setCodigoNota("null");
+            notaToCreate.setCodigoNota(createCodigoNota());
             notaToCreate.setEntidadComercial(entityManager.getReference(EntidadComercial.class, notaRequest.getEntidadComercialId()));
             notaToCreate.setUsuario(entityManager.getReference(Usuario.class, notaRequest.getUsuarioId()));
 
@@ -48,10 +55,38 @@ public class NotaService implements INotaService{
 
             // CREATE MOVIMIENTOS
             //validar stock
+            List<Movimientos> movimientosSaved = new ArrayList<>();
             for(MovimientoRequest movimientoRequest : notaRequest.getMovimientos()){
-                
+                Movimientos movimientoToCreate = MovimientoRequest.toEntity(movimientoRequest);
+                movimientoToCreate.setAlmacen(entityManager.getReference(Almacen.class, movimientoRequest.getAlmacenId()));
+                movimientoToCreate.setNotas(entityManager.getReference(Notas.class, notaCreated.getId()));
+                movimientoToCreate.setProducto(entityManager.getReference(Producto.class, movimientoRequest.getProductoId()));
+                movimientosSaved.add(movimientoRepository.save(movimientoToCreate));
             }
             // UPDATE STOCK
+            for(Movimientos movimiento : movimientosSaved){
+                AlmacenProducto almacenProductoRetrieved = almacenProductoRepository.findByAlmacen_IdAndProducto_Id(
+                    movimiento.getAlmacen().getId(), movimiento.getProducto().getId())
+                    .orElseThrow(()->new RuntimeException("No se encontraron productos en almacen"));
+                switch(movimiento.getTipoMovimiento()){
+                    case "0":
+                        almacenProductoRetrieved.setCantidadActual(almacenProductoRetrieved.getCantidadActual()+movimiento.getCantidad());
+                    break;
+                    case "1":
+                        if(almacenProductoRetrieved.getCantidadActual()<movimiento.getCantidad()){
+                            throw new RuntimeException("No existe cantidad suficiente del producto "+movimiento.getProducto().getNombre());
+                        }
+                        almacenProductoRetrieved.setCantidadActual(almacenProductoRetrieved.getCantidadActual()-movimiento.getCantidad());
+                    break;
+                    case "2":
+                        //Devolucion asociado a ventas
+                        almacenProductoRetrieved.setCantidadActual(almacenProductoRetrieved.getCantidadActual()+movimiento.getCantidad());
+                    break;
+                }
+                almacenProductoRepository.save(almacenProductoRetrieved);   
+            }
+            //TODO create report nota;
+            return NotaResponse.builder().message("created").build();
         } catch (Exception e) {
             throw e;
         }
@@ -59,7 +94,19 @@ public class NotaService implements INotaService{
     }
 
     private BigDecimal calculateTotal(List<MovimientoRequest> movimientos){
-        return new BigDecimal(0);
+        BigDecimal totalCalculado = new BigDecimal(0);
+        for(MovimientoRequest movimiento : movimientos){
+            totalCalculado = movimiento.getPrecioUnitarioVenta().add(new BigDecimal(movimiento.getCantidad()));
+        }
+        return totalCalculado;
+    }
+
+    private String createCodigoNota(){
+        //N-0000001-2025
+        int year = Instant.now().atZone(ZoneId.systemDefault()).getYear();
+        long totalRecords = notaRepository.count();
+        String codigoResult = String.format("%06d", totalRecords); 
+        return "N-"+codigoResult+"-"+year;
     }
 
 
