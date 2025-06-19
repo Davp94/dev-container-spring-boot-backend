@@ -1,6 +1,7 @@
 package com.blumbit.supermercado.dto.request;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.blumbit.supermercado.entity.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -65,6 +66,8 @@ public class UsuarioRequest {
     @NotBlank(message = "El campo no puede estar vacio")
     @NotNull(message = "El campo no puede ser nulo")
     private String nacionalidad;
+
+    private List<Short> rolesIds;
 
     public static Usuario toEntity(UsuarioRequest usuarioRequest){
         return Usuario.builder()

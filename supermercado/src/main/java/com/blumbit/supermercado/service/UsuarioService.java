@@ -2,6 +2,7 @@ package com.blumbit.supermercado.service;
 
 import com.blumbit.supermercado.dto.request.UsuarioRequest;
 import com.blumbit.supermercado.dto.response.UsuarioResponse;
+import com.blumbit.supermercado.entity.Rol;
 import com.blumbit.supermercado.entity.Usuario;
 import com.blumbit.supermercado.exception.NotFoundByIdException;
 import com.blumbit.supermercado.repository.UsuarioRepository;
@@ -21,10 +22,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class UsuarioService implements IUsuarioService{
     private final UsuarioRepository usuarioRepository;
+    private final EntityManager entityManager;
     private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, EntityManager entityManager) {
         this.usuarioRepository = usuarioRepository;
+        this.entityManager = entityManager;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -70,6 +73,9 @@ public class UsuarioService implements IUsuarioService{
         try {
             Usuario usuarioToSave = UsuarioRequest.toEntity(usuario);
             usuarioToSave.setPassword(passwordEncoder.encode("123456"));
+            usuarioToSave.setRoles(usuario.getRolesIds().stream().map(rolId->
+                entityManager.getReference(Rol.class, rolId)
+            ).collect(Collectors.toList()));
             return UsuarioResponse.fromEntity(usuarioRepository.save(usuarioToSave));
         } catch (Exception e) {
            throw new RuntimeException("error creando");
@@ -83,6 +89,9 @@ public class UsuarioService implements IUsuarioService{
             if (usuario == null) {
                 throw new RuntimeException("No se encontro un usuario con el id ingresado");
             }
+            usuarioRetrieved.setRoles(usuario.getRolesIds().stream().map(rolId->
+                entityManager.getReference(Rol.class, rolId)
+            ).collect(Collectors.toList()));
             return UsuarioResponse.fromEntity(usuarioRepository.save(usuarioRetrieved));
         } catch (Exception e) {
             throw e;

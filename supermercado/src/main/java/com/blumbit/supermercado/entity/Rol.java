@@ -25,6 +25,8 @@ public class Rol {
 
     private String descripcion;
 
+    private Short estado;
+
     @ManyToMany(mappedBy = "roles")
     private List<Usuario> usuarios;
 

@@ -1,4 +1,7 @@
 package com.blumbit.supermercado.dto.response;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.blumbit.supermercado.entity.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -25,6 +28,7 @@ public class UsuarioResponse {
     private String dni;
     private String tipoDocumento;
     private String nacionalidad;
+    private List<String> roles;
 
     public static UsuarioResponse fromEntity(Usuario usuario){
         return UsuarioResponse.builder()
@@ -38,6 +42,7 @@ public class UsuarioResponse {
                     .dni(usuario.getDocumentoIdentidad())
                     .tipoDocumento(usuario.getTipoDocumento())
                     .nacionalidad(usuario.getNacionalidad())
+                    .roles(usuario.getRoles().stream().map(rol->rol.getNombre()).collect(Collectors.toList()))
                     .build();
     }
     
