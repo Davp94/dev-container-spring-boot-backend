@@ -2,11 +2,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "DiscoveryServiceApplication",
+            "request": "launch",
+            "mainClass": "com.microservices.discovery_service.DiscoveryServiceApplication"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-SupermercadoApplication<supermercado>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "mainClass": "com.blumbit.supermercado.SupermercadoApplication",
             "projectName": "supermercado",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-DiscoveryServiceApplication<discovery-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.microservices.discovery_service.DiscoveryServiceApplication",
+            "projectName": "discovery-service",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
         }
