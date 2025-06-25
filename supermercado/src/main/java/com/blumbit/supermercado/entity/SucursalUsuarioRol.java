@@ -25,15 +25,15 @@ public class SucursalUsuarioRol {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "almacen_id")
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     @ManyToOne
-    @JoinColumn(name = "almacen_id")
+    @JoinColumn(name = "sucursal_id")
     private Sucursal sucursal;
 
     @ManyToOne
-    @JoinColumn(name = "almacen_id")
+    @JoinColumn(name = "rol_id")
     private Rol rol;
 
 }

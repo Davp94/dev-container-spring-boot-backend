@@ -63,7 +63,7 @@ public class RolService implements IRolService{
             }
             return RolResponse.fromEntity(rolCreated);  
         } catch (Exception e) {
-           throw new RuntimeException("Error al crear el rol")
+           throw new RuntimeException("Error al crear el rol");
         }
 
     }

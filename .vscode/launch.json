@@ -25,6 +25,16 @@
             "projectName": "discovery-service",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-AuditServiceApplication<audit-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.microservices.audit_service.AuditServiceApplication",
+            "projectName": "audit-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
