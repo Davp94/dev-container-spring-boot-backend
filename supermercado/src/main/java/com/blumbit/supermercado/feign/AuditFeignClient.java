@@ -12,9 +12,9 @@ import com.blumbit.supermercado.dto.feign.Audit;
 @FeignClient(name = "audit-service", url = "${feign.client.url}")
 public interface AuditFeignClient {
 
-    @GetMapping(value = "/audits")
+    @GetMapping(value = "/audit-service/audits")
     ResponseEntity<List<Audit>> getAllAudits();
 
-    @PostMapping(value = "/audits")
+    @PostMapping(value = "/audit-service/audits")
     ResponseEntity<Audit> createAudit(Audit audit);
 }
