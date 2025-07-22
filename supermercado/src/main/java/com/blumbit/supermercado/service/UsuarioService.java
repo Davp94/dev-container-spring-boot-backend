@@ -1,20 +1,15 @@
 package com.blumbit.supermercado.service;
 
-import com.blumbit.supermercado.dto.feign.Audit;
 import com.blumbit.supermercado.dto.request.UsuarioRequest;
 import com.blumbit.supermercado.dto.response.UsuarioResponse;
 import com.blumbit.supermercado.entity.Rol;
 import com.blumbit.supermercado.entity.Usuario;
 import com.blumbit.supermercado.exception.NotFoundByIdException;
-import com.blumbit.supermercado.feign.AuditFeignClient;
 import com.blumbit.supermercado.repository.UsuarioRepository;
 
 import jakarta.persistence.EntityManager;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,13 +21,12 @@ public class UsuarioService implements IUsuarioService{
     private final UsuarioRepository usuarioRepository;
     private final EntityManager entityManager;
     private final PasswordEncoder passwordEncoder;
-    private final AuditFeignClient auditFeignClient;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, EntityManager entityManager, AuditFeignClient auditFeignClient) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, EntityManager entityManager) {
         this.usuarioRepository = usuarioRepository;
         this.entityManager = entityManager;
         this.passwordEncoder = passwordEncoder;
-        this.auditFeignClient = auditFeignClient;
+
     }
 
     @Override
@@ -66,12 +60,6 @@ public class UsuarioService implements IUsuarioService{
             if(response.size() == 0){
                 throw new RuntimeException("No existen registros de usuarios");
             }
-            auditFeignClient.createAudit(Audit.builder()
-            .action("GET")
-            .details("Listado de usuarios")
-            .resource(Usuario.class.getName())
-            .userId("1")
-            .build());
             return response;
         } catch (Exception e) {
              throw e;

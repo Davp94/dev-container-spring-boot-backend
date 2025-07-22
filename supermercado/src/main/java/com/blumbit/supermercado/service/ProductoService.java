@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.blumbit.supermercado.common.dto.PageableRequest;
 import com.blumbit.supermercado.common.dto.PageableResponse;
+import com.blumbit.supermercado.dto.request.ProductoRequest;
 import com.blumbit.supermercado.dto.response.producto.ProductoFilterCriteria;
 import com.blumbit.supermercado.dto.response.producto.ProductoResponse;
 import com.blumbit.supermercado.entity.Producto;
@@ -51,6 +52,12 @@ public class ProductoService implements IProductoService{
             .pageSize(productPage.getSize())
             .totalPages(productPage.getTotalPages())
             .content(productPage.getContent().stream().map(ProductoResponse::fromEntity).collect(Collectors.toList())).build();  
+    }
+
+    @Override
+    public ProductoResponse createProducto(ProductoRequest productoRequest) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createProducto'");
     }
 
 }

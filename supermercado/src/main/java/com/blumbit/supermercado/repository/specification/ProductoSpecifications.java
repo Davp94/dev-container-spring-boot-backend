@@ -6,17 +6,28 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.blumbit.supermercado.dto.response.producto.ProductoFilterCriteria;
+import com.blumbit.supermercado.entity.AlmacenProducto;
 import com.blumbit.supermercado.entity.Categoria;
 import com.blumbit.supermercado.entity.Producto;
 
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 
 public class ProductoSpecifications {
 
     public static Specification<Producto> createSpecification(ProductoFilterCriteria criteria){
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
+            
+            if(criteria.getAlmacenId() != null && criteria.getAlmacenId() != (short) 0){
+                 Subquery<Long> subquery = query.subquery(Long.class);
+                Root<AlmacenProducto> almacenProductoRoot = subquery.from(AlmacenProducto.class);
+                subquery.select(almacenProductoRoot.get("producto").get("id"))
+                        .where(criteriaBuilder.equal(almacenProductoRoot.get("almacen").get("id"), criteria.getAlmacenId()));
+                predicates.add(criteriaBuilder.in(root.get("id")).value(subquery));
+            }
 
             if(criteria.getNombre() != null && !criteria.getNombre().trim().isEmpty()){
                 predicates.add(criteriaBuilder.like(

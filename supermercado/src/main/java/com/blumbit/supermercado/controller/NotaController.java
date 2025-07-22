@@ -26,8 +26,4 @@ public class NotaController {
         return CustomResponse.<NotaResponse>success(notaService.createNota(notaRequest));
     }
     
-
-
-    
-
 }

@@ -65,7 +65,6 @@ public class RolService implements IRolService{
         } catch (Exception e) {
            throw new RuntimeException("Error al crear el rol");
         }
-
     }
 
     @Override

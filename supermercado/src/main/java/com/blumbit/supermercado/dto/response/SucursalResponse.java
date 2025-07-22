@@ -1,4 +1,4 @@
-package com.blumbit.supermercado.dto.response.producto;
+package com.blumbit.supermercado.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -14,11 +14,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ProductoFilterCriteria {
-    private Short almacenId;
+public class SucursalResponse {
+
+    private Short id;
+
     private String nombre;
+    
     private String descripcion;
-    private String codigoBarra;
-    private String marca;
-    private String nombreCategoria; 
+
+    private String telefono;
+
+    private String ciudad;
 }

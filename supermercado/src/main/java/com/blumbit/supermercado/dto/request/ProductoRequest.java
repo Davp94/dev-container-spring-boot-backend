@@ -1,4 +1,6 @@
-package com.blumbit.supermercado.dto.response.producto;
+package com.blumbit.supermercado.dto.request;
+
+import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -14,11 +16,23 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ProductoFilterCriteria {
-    private Short almacenId;
+public class ProductoRequest {
+
     private String nombre;
+    
     private String descripcion;
-    private String codigoBarra;
+    
+    private String unidadMedida;
+    
     private String marca;
-    private String nombreCategoria; 
+    
+    private BigDecimal precioVentaActual;
+    
+    private Integer stockMinimo;
+    
+    private String imagenUrl;
+    
+    private Long categoriaId;
+
+    private Short almacenId;
 }
