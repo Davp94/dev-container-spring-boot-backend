@@ -29,7 +29,7 @@ public class SecurityConfig {
                     req.requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**")
                         .permitAll()
                         .anyRequest()
-                        .authenticated()
+                        .permitAll()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authenticationProvider)

@@ -37,8 +37,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/usuarios")
-    public List<UsuarioResponse> getAllUsuarios() {
-        return usuarioService.findAll();
+    public CustomResponse<List<UsuarioResponse>> getAllUsuarios() {
+        return CustomResponse.<List<UsuarioResponse>>success(usuarioService.findAll());
     }
 
     @PostMapping("/usuarios")
