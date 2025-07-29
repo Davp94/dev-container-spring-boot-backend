@@ -52,6 +52,8 @@ public class Usuario { //usuario
 
     private String nacionalidad;
 
+    private String estado;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "usuario_rol",

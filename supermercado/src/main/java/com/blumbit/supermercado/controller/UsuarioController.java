@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.blumbit.supermercado.common.dto.CustomResponse;
 import com.blumbit.supermercado.dto.request.UsuarioRequest;
+import com.blumbit.supermercado.dto.request.UsuarioUpdateRequest;
 import com.blumbit.supermercado.dto.response.UsuarioResponse;
 import com.blumbit.supermercado.service.IUsuarioService;
 
@@ -48,7 +49,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/usuarios/{id}")
-    public ResponseEntity<UsuarioResponse> updateUsuario(@PathVariable Long id, @RequestBody UsuarioRequest usuarioRequest) {
+    public ResponseEntity<UsuarioResponse> updateUsuario(@PathVariable Long id, @RequestBody UsuarioUpdateRequest usuarioRequest) {
         UsuarioResponse savedUsuario = usuarioService.update(id, usuarioRequest); 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUsuario);
     }

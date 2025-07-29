@@ -3,6 +3,7 @@ package com.blumbit.supermercado.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +16,7 @@ import com.blumbit.supermercado.service.IRolService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -34,10 +36,37 @@ public class RolController {
         }
     }
 
+    @GetMapping("/{id}")
+    public CustomResponse<RolResponse> getRoles(@PathVariable Short id) {
+        try {
+            return CustomResponse.success(rolService.findRolById(id));
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
     @PostMapping
     public CustomResponse<RolResponse> createRol(@RequestBody RolRequest rolRequest) {
         try {
             return CustomResponse.success(rolService.createRol(rolRequest));
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    @PutMapping("/{id}")
+    public CustomResponse<RolResponse> updateRol(@PathVariable Short id, @RequestBody RolRequest rolRequest) {
+        try {
+            return CustomResponse.success(rolService.updateRol(id, rolRequest));
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    @GetMapping("/permisos")
+    public CustomResponse<List<PermisoResponse>> getPermisos() {
+        try {
+            return CustomResponse.success(rolService.findAllPermisos());
         } catch (Exception e) {
             throw e;
         }

@@ -30,7 +30,6 @@ public class UsuarioRequest {
     @NotNull(message = "El campo no puede ser nulo")
     private String email;
 
-    @Pattern(regexp = "")
     private String fechaNacimiento;
 
     @NotBlank(message = "El campo no puede estar vacio")

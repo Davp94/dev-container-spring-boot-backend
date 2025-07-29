@@ -29,6 +29,7 @@ public class RolRequest {
         return Rol.builder()
             .descripcion(rolRequest.getDescripcion())
             .nombre(rolRequest.getNombre())
+            .estado((short)1)
             .build();
     }
 }

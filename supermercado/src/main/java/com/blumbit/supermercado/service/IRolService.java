@@ -20,5 +20,7 @@ public interface IRolService {
     void deleteRol(Short id);
 
     PermisoResponse createPermiso(PermisoRequest permisoRequest);
+
+    List<PermisoResponse> findAllPermisos();
     
 }
