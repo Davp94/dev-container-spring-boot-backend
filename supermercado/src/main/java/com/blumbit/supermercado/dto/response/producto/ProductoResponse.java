@@ -30,6 +30,7 @@ public class ProductoResponse {
 
     public static ProductoResponse fromEntity(Producto producto){
         return ProductoResponse.builder()
+                .id(producto.getId())
                 .nombre(producto.getNombre())
                 .descripcion(producto.getDescripcion())
                 .codigoBarra(producto.getCodigoBarra())

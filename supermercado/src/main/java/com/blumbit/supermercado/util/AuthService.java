@@ -1,5 +1,6 @@
 package com.blumbit.supermercado.util;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
+    @Value("${jwt.expiration}")
+    private String expiration;
     private final UsuarioRepository usuarioRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -31,6 +35,7 @@ public class AuthService {
         return  AuthResponse.builder()
                 .token(token)
                 .refreshToken(refreshToken)
+                .expiration(expiration)
                 .build(); 
     }
 

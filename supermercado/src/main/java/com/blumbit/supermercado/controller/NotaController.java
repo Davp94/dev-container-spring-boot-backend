@@ -7,6 +7,10 @@ import com.blumbit.supermercado.common.dto.CustomResponse;
 import com.blumbit.supermercado.dto.request.NotaRequest;
 import com.blumbit.supermercado.dto.response.nota.NotaResponse;
 import com.blumbit.supermercado.service.INotaService;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -19,6 +23,11 @@ public class NotaController {
 
     public NotaController(INotaService notaService) {
         this.notaService = notaService;
+    }
+
+    @GetMapping
+    public CustomResponse<List<NotaResponse>> getAllNotas() {
+        return CustomResponse.<List<NotaResponse>>success(notaService.findAllNotas());
     }
 
     @PostMapping

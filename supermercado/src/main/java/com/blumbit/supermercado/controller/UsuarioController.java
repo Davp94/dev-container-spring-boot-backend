@@ -20,9 +20,6 @@ import com.blumbit.supermercado.dto.request.UsuarioUpdateRequest;
 import com.blumbit.supermercado.dto.response.UsuarioResponse;
 import com.blumbit.supermercado.service.IUsuarioService;
 
-import jakarta.validation.Valid;
-
-
 @RestController
 public class UsuarioController {
 
